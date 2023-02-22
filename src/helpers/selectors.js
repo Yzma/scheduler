@@ -13,3 +13,22 @@ export const getAppointmentsForDay = (state, day) => {
     []
   ) || [];
 }
+
+export const getInterview = (state, interview) => {
+  const interviewerId = interview?.interviewer
+  if (!interviewerId) {
+    return null
+  }
+
+  const foundInterviewer = Object.values(state.interviewers).find(e => e.id === interviewerId)
+  if(!foundInterviewer) {
+    return null
+  }
+
+  return {
+    student: interview.student,
+    interviewer: {
+      ...foundInterviewer
+    }
+  }
+}
