@@ -26,6 +26,19 @@ const useVisualMode = (initial) => {
       }
       return prev
     })
+
+    // Other version
+    // if(history.length <= 1) {
+    //   return
+    // }
+
+    // const newHistory = [...history]
+    // console.log('newHistory: ', newHistory)
+    // newHistory.pop()
+    // console.log('newHistory after pop: ', newHistory)
+
+    // setMode(newHistory[newHistory.length - 1])
+    // setHistory(newHistory)
   }
 
   return { mode, transition, back };
