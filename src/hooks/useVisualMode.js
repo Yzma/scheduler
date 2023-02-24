@@ -18,16 +18,27 @@ const useVisualMode = (initial) => {
   }
 
   const back = () => {
+    if (history.length <= 1) {
+      return
+    }
+
     setHistory(prev => {
-      if(prev.length > 1) {
-        prev.pop()
-        setMode(prev[prev.length - 1])
-        return prev
-      }
+      prev.pop()
+      setMode(prev[prev.length - 1])
       return prev
     })
 
     // Other version
+    // setHistory(prev => {
+    //   if(prev.length > 1) {
+    //     prev.pop()
+    //     setMode(prev[prev.length - 1])
+    //     return prev
+    //   }
+    //   return prev
+    // })
+
+    //
     // if(history.length <= 1) {
     //   return
     // }
