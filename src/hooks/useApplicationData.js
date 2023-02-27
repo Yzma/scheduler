@@ -23,12 +23,23 @@ const reducer = (state, action) => {
       }
 
     case SET_INTERVIEW:
-      console.log('reducer appointments: ', action.value.appointments)
+      console.log('SET_INTERVIEW reducer', action.value)
+      const { id, interview } = action.value
+
+      const appointment = {
+        ...state.appointments[id],
+        interview: interview
+      };
+  
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
 
       return {
         ...state,
-        appointments: action.value.appointments,
-        days: updateSpots(state, action.value.appointments)
+        appointments: appointments,
+        days: updateSpots(state, appointments)
       }
 
     default:
@@ -72,11 +83,22 @@ const useApplicationData = () => {
 
       console.log("Client Message Received:", data);
 
-      if(data.type === "SET_INTERVIEW") {
+      if(data.type === 'SET_INTERVIEW') {
+        // {
+        //   type: "SET_INTERVIEW",
+        //   id,
+        //   interview: {
+        //     student,
+        //     interviewer: {
+        //       id
+        //       name,
+        //       avatar
+        //     }
+        //   }
+        // }
 
-        console.log('copy copyTest: ', state)
+        dispatch({ type: SET_INTERVIEW, value: { id: data.id, interview: data.interview }})
 
-        //dispatch({ type: SET_INTERVIEW, value: { appointments } })
       }
     }
 
@@ -92,43 +114,24 @@ const useApplicationData = () => {
     return () => {
       socket.close()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const bookInterview = (id, interview) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
 
     console.log(id, interview);
 
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { id, interview })
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: { appointments } })
+        dispatch({ type: SET_INTERVIEW,  value: { id, interview } })
         console.log('Updated state successfully')
       })
   }
 
   const cancelInterview = (id) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
-        dispatch({ type: SET_INTERVIEW, value: { appointments } })
+        dispatch({ type: SET_INTERVIEW,  value: { id, interview: null } })
         console.log('Updated state successfully')
       })
   }

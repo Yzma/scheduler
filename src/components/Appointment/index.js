@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import Header from './Header';
 import Show from './Show';
@@ -49,6 +49,15 @@ export default function Appointment(props) {
         console.log(`error deleting interview(${props.id})`, err)
       })
   }
+
+  useEffect(() => {
+    if (props.interview && mode === EMPTY) {
+     transition(SHOW);
+    }
+    if (props.interview === null && mode === SHOW) {
+     transition(EMPTY);
+    }
+   }, [transition, mode, props.interview]);
 
   return (
     <article className="appointment">
