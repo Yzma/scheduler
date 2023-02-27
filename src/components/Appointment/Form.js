@@ -31,7 +31,7 @@ const Form = (props) => {
             value={studentName}
           />
         </form>
-        <InterviewerList interviewers={props.interviewers} onChange={setInterviewerId} value={interviewerId} selected={true} />
+        <InterviewerList interviewers={props.interviewers} onChange={setInterviewerId} value={interviewerId} />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
