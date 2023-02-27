@@ -1,14 +1,48 @@
 
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
+
+const reducer = (state, action) => {
+  console.log('ACTION: ', action)
+  switch (action.type) {
+    case SET_DAY:
+      return {
+        ...state,
+        day: action.value
+      }
+    case SET_APPLICATION_DATA:
+      return {
+        ...state,
+        days: action.value.days,
+        appointments: action.value.appointments,
+        interviewers: action.value.interviewers
+      }
+
+    case SET_INTERVIEW:
+      return {
+        ...state,
+        appointments: action.value.appointments,
+        days: action.value.days
+      }
+
+    default:
+      throw new Error(
+        `Tried to reduce with unsupported action type: ${action.type}`
+      );
+  }
+}
+
 const useApplicationData = () => {
-  const [state, setState] = useState({
+  const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
-  })
+  });
 
   useEffect(() => {
     Promise.all([
@@ -17,7 +51,7 @@ const useApplicationData = () => {
       axios.get("http://localhost:8001/api/interviewers")
     ]).then((all) => {
       console.log('All: ', all)
-      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
+      dispatch({ type: "SET_APPLICATION_DATA", value: { days: all[0].data, appointments: all[1].data, interviewers: all[2].data } })
     });
   }, [])
 
@@ -34,10 +68,10 @@ const useApplicationData = () => {
 
     console.log(id, interview);
     const updatedDaysCopy = updateSpots(appointments)
-    
+
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { id, interview })
       .then(() => {
-        setState({ ...state, appointments, days: updatedDaysCopy })
+        dispatch({ type: SET_INTERVIEW, value: { appointments, days: updatedDaysCopy } })
         console.log('Updated state successfully')
       })
   }
@@ -57,32 +91,28 @@ const useApplicationData = () => {
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
-        setState({ ...state, appointments, days: updatedDaysCopy })
+        dispatch({ type: SET_INTERVIEW, value: { appointments, days: updatedDaysCopy } })
         console.log('Updated state successfully')
       })
   }
 
   const updateSpots = (appointments) => {
-    const updatedDaysCopy = state.days.map(stateDay => {
-      if(stateDay.name === state.day) {
-        const spotsRemaining = stateDay.appointments.filter(e => appointments[e].interview === null).length
-        return {
-          ...stateDay,
-          spots: spotsRemaining
-        }
+    return state.days.map(stateDay => {
+      if (stateDay.name !== state.day) {
+        return stateDay
       }
-      return stateDay
+
+      const spotsRemaining = stateDay.appointments.filter(e => appointments[e].interview === null).length
+      return {
+        ...stateDay,
+        spots: spotsRemaining
+      }
     })
-    return updatedDaysCopy
   }
 
-  // const updateSpots = (days, appointments) => {
-  //   const foundDay = days.find(e => e.name === state.day)
-  //   const spotsRemaining = foundDay.appointments.filter(e => appointments[e].interview === null).length
-  //   foundDay.spots = spotsRemaining
-  // }
-
-  const setDay = day => setState({ ...state, day });
+  const setDay = day => {
+    dispatch({ type: SET_DAY, value: day })
+  }
 
   return { state, setDay, bookInterview, cancelInterview };
 }
