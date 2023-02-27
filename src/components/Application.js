@@ -16,6 +16,49 @@ export default function Application(props) {
     interviewers: {}
   })
 
+  const bookInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    console.log(id, interview);
+
+    return axios.put(`http://localhost:8001/api/appointments/${id}`, { id, interview })
+      .then(res => {
+        setState({ ...state, appointments })
+        console.log('res ', res)
+        console.log('Updated state successfully')
+      })
+  }
+
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    console.log(id)
+    console.log(appointments)
+
+    return axios.delete(`http://localhost:8001/api/appointments/${id}`)
+      .then(res => {
+        setState({ ...state, appointments })
+        console.log('res ', res)
+        console.log('Updated state successfully')
+      })
+  }
+
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day)
 
@@ -30,6 +73,8 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
@@ -46,6 +91,8 @@ export default function Application(props) {
       setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     });
   }, [])
+
+  console.log('CURRENT STATE: ', state)
 
   return (
     <main className="layout">

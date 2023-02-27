@@ -31,12 +31,12 @@ const Form = (props) => {
             value={studentName}
           />
         </form>
-        <InterviewerList interviewers={props.interviewers} onChange={setInterviewerId} value={interviewerId} />
+        <InterviewerList interviewers={props.interviewers} onChange={setInterviewerId} value={interviewerId} selected={true} />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button onClick={cancel} danger>Cancel</Button>
-          <Button onClick={props.onSave} confirm>Save</Button>
+          <Button onClick={() => props.onSave(studentName, interviewerId)} confirm>Save</Button>
         </section>
       </section>
     </main>
