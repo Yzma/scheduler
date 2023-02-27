@@ -33,11 +33,11 @@ const useApplicationData = () => {
     };
 
     console.log(id, interview);
-    updateSpots(state.days, appointments)
+    const updatedDaysCopy = updateSpots(appointments)
     
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { id, interview })
       .then(() => {
-        setState({ ...state, appointments })
+        setState({ ...state, appointments, days: updatedDaysCopy })
         console.log('Updated state successfully')
       })
   }
@@ -53,20 +53,34 @@ const useApplicationData = () => {
       [id]: appointment
     };
 
-    updateSpots(state.days, appointments)
+    const updatedDaysCopy = updateSpots(appointments)
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
-        setState({ ...state, appointments  })
+        setState({ ...state, appointments, days: updatedDaysCopy })
         console.log('Updated state successfully')
       })
   }
 
-  const updateSpots = (days, appointments) => {
-    const foundDay = days.find(e => e.name === state.day)
-    const spotsRemaining = foundDay.appointments.filter(e => appointments[e].interview === null).length
-    foundDay.spots = spotsRemaining
+  const updateSpots = (appointments) => {
+    const updatedDaysCopy = state.days.map(stateDay => {
+      if(stateDay.name === state.day) {
+        const spotsRemaining = stateDay.appointments.filter(e => appointments[e].interview === null).length
+        return {
+          ...stateDay,
+          spots: spotsRemaining
+        }
+      }
+      return stateDay
+    })
+    return updatedDaysCopy
   }
+
+  // const updateSpots = (days, appointments) => {
+  //   const foundDay = days.find(e => e.name === state.day)
+  //   const spotsRemaining = foundDay.appointments.filter(e => appointments[e].interview === null).length
+  //   foundDay.spots = spotsRemaining
+  // }
 
   const setDay = day => setState({ ...state, day });
 
