@@ -20,7 +20,6 @@ const reducer = (state, action) => {
       }
 
     case SET_INTERVIEW:
-      //console.log('SET_INTERVIEW reducer', action.value)
       const { id, interview } = action.value
 
       const appointment = {
@@ -36,7 +35,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         appointments: appointments,
-        days: updateSpots(state, appointments)
+        days: updateSpotsForDays(state, appointments)
       }
 
     default:
@@ -46,7 +45,15 @@ const reducer = (state, action) => {
   }
 }
 
-const updateSpots = (state, appointments) => {
+/**
+ * Constructs and return a copy of the days array for the provided State object that updates the 'spots' remaining property
+ * based on the provided appointments.
+ * 
+ * @param {Object} state the State object from useApplicationData
+ * @param {Object} appointments the appointments object to calculate the number of remaining spots
+ * @returns A copy of the State's days array with the updated 'spots' property
+ */
+const updateSpotsForDays = (state, appointments) => {
   return state.days.map(stateDay => {
     if (stateDay.name !== state.day) {
       return stateDay
