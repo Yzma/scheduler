@@ -56,7 +56,7 @@ const fixtures = {
 export default {
   defaults: { baseURL: "" },
   get: jest.fn(url => {
-    if (url === "http://localhost:8001/api/days") {
+    if (url === "/api/days") {
       return Promise.resolve({
         status: 200,
         statusText: "OK",
@@ -64,7 +64,7 @@ export default {
       });
     }
 
-    if (url === "http://localhost:8001/api/appointments") {
+    if (url === "/api/appointments") {
       /* Resolve appointments data */
       return Promise.resolve({
         status: 200,
@@ -73,7 +73,7 @@ export default {
       });
     }
 
-    if (url === "http://localhost:8001/api/interviewers") {
+    if (url === "/api/interviewers") {
       /* Resolve interviewers data */
       return Promise.resolve({
         status: 200,
@@ -84,14 +84,14 @@ export default {
   }),
 
   put: jest.fn(url => {
-    if (url.startsWith("http://localhost:8001/api/days")) {
+    if (url.startsWith("/api/days")) {
       return Promise.resolve({
         status: 204, 
         statusText: "No Content"
       });
     }
 
-    if (url.startsWith(`http://localhost:8001/api/appointments/`)) {
+    if (url.startsWith(`/api/appointments/`)) {
       /* Resolve appointments data */
       return Promise.resolve({
         status: 204, 
@@ -99,7 +99,7 @@ export default {
       });
     }
 
-    if (url.startsWith("http://localhost:8001/api/interviewers")) {
+    if (url.startsWith("/api/interviewers")) {
       /* Resolve interviewers data */
       return Promise.resolve({
         status: 204, 
@@ -109,14 +109,14 @@ export default {
   }),
 
   delete: jest.fn(url => {
-    if (url.startsWith("http://localhost:8001/api/days")) {
+    if (url.startsWith("/api/days")) {
       return Promise.resolve({
         status: 204, 
         statusText: "No Content"
       });
     }
 
-    if (url.startsWith(`http://localhost:8001/api/appointments/`)) {
+    if (url.startsWith(`/api/appointments/`)) {
       /* Resolve appointments data */
       return Promise.resolve({
         status: 204, 
@@ -124,7 +124,7 @@ export default {
       });
     }
 
-    if (url.startsWith("http://localhost:8001/api/interviewers")) {
+    if (url.startsWith("/api/interviewers")) {
       /* Resolve interviewers data */
       return Promise.resolve({
         status: 204, 
