@@ -55,10 +55,6 @@ const reducer = (state, action) => {
  */
 const updateSpotsForDays = (state, appointments) => {
   return state.days.map(stateDay => {
-    if (stateDay.name !== state.day) {
-      return stateDay
-    }
-
     const spotsRemaining = stateDay.appointments.filter(e => appointments[e].interview === null).length
     return {
       ...stateDay,
