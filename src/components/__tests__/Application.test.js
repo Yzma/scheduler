@@ -152,7 +152,7 @@ describe("Application", () => {
     axios.delete.mockRejectedValueOnce();
 
     // 1. Render the Application.
-    const { container, debug } = render(<Application />);
+    const { container } = render(<Application />);
 
     // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
@@ -172,7 +172,7 @@ describe("Application", () => {
 
     // 6. Check that the element with the text "Deleting" is displayed.
     expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
-    debug()
+
     await waitForElement(() => getByText(appointment, "Error"));
 
     expect(getByText(container, "Error")).toBeInTheDocument();
