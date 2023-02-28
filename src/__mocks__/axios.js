@@ -106,5 +106,30 @@ export default {
         statusText: "No Content"
       });
     }
+  }),
+
+  delete: jest.fn(url => {
+    if (url.startsWith("http://localhost:8001/api/days")) {
+      return Promise.resolve({
+        status: 204, 
+        statusText: "No Content"
+      });
+    }
+
+    if (url.startsWith(`http://localhost:8001/api/appointments/`)) {
+      /* Resolve appointments data */
+      return Promise.resolve({
+        status: 204, 
+        statusText: "No Content"
+      });
+    }
+
+    if (url.startsWith("http://localhost:8001/api/interviewers")) {
+      /* Resolve interviewers data */
+      return Promise.resolve({
+        status: 204, 
+        statusText: "No Content"
+      });
+    }
   })
 };
