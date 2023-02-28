@@ -34,8 +34,6 @@ describe("Application", () => {
       target: { value: "Lydia Miller-Jones" }
     });
 
-    //console.log('thing: ', prettyDOM(appointments))
-
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
     fireEvent.click(getByText(appointment, "Save"));
 
@@ -63,8 +61,6 @@ describe("Application", () => {
     );
 
     fireEvent.click(getByAltText(appointment, "Delete"));
-
-    // console.log('appointment', prettyDOM(appointment))
 
     // 4. Check that the confirmation message is shown.
     expect(getByText(appointment, "Are you sure you want to delete this appointment?")).toBeInTheDocument();
