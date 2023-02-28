@@ -2,66 +2,11 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case SET_DAY:
-      return {
-        ...state,
-        day: action.value
-      }
-
-    case SET_APPLICATION_DATA:
-      return {
-        ...state,
-        days: action.value.days,
-        appointments: action.value.appointments,
-        interviewers: action.value.interviewers
-      }
-
-    case SET_INTERVIEW:
-      console.log('SET_INTERVIEW reducer', action.value)
-      const { id, interview } = action.value
-
-      const appointment = {
-        ...state.appointments[id],
-        interview: interview
-      };
-  
-      const appointments = {
-        ...state.appointments,
-        [id]: appointment
-      };
-
-      return {
-        ...state,
-        appointments: appointments,
-        days: updateSpots(state, appointments)
-      }
-
-    default:
-      throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`
-      );
-  }
-}
-
-const updateSpots = (state, appointments) => {
-  return state.days.map(stateDay => {
-    if (stateDay.name !== state.day) {
-      return stateDay
-    }
-
-    const spotsRemaining = stateDay.appointments.filter(e => appointments[e].interview === null).length
-    return {
-      ...stateDay,
-      spots: spotsRemaining
-    }
-  })
-}
+import reducer, {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW
+} from "reducers/application";
 
 const useApplicationData = () => {
   const [state, dispatch] = useReducer(reducer, {
@@ -83,7 +28,7 @@ const useApplicationData = () => {
 
       console.log("Client Message Received:", data);
 
-      if(data.type === 'SET_INTERVIEW') {
+      if (data.type === 'SET_INTERVIEW') {
         // {
         //   type: "SET_INTERVIEW",
         //   id,
@@ -97,7 +42,7 @@ const useApplicationData = () => {
         //   }
         // }
 
-        dispatch({ type: SET_INTERVIEW, value: { id: data.id, interview: data.interview }})
+        dispatch({ type: SET_INTERVIEW, value: { id: data.id, interview: data.interview } })
 
       }
     }
@@ -107,7 +52,7 @@ const useApplicationData = () => {
       axios.get("http://localhost:8001/api/appointments"),
       axios.get("http://localhost:8001/api/interviewers")
     ]).then((all) => {
-      console.log('All: ', all)
+      //console.log('All: ', all)
       dispatch({ type: SET_APPLICATION_DATA, value: { days: all[0].data, appointments: all[1].data, interviewers: all[2].data } })
     });
 
@@ -118,12 +63,12 @@ const useApplicationData = () => {
 
   const bookInterview = (id, interview) => {
 
-    console.log(id, interview);
+    //    console.log(id, interview);
 
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { id, interview })
       .then(() => {
-        dispatch({ type: SET_INTERVIEW,  value: { id, interview } })
-        console.log('Updated state successfully')
+        dispatch({ type: SET_INTERVIEW, value: { id, interview } })
+        //console.log('Updated state successfully')
       })
   }
 
@@ -131,7 +76,7 @@ const useApplicationData = () => {
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(() => {
-        dispatch({ type: SET_INTERVIEW,  value: { id, interview: null } })
+        dispatch({ type: SET_INTERVIEW, value: { id, interview: null } })
         console.log('Updated state successfully')
       })
   }
