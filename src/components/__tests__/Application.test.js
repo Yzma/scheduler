@@ -1,6 +1,8 @@
 import React from "react";
 
-import { render, cleanup, waitForElement, fireEvent, getByText, getByAltText, getAllByTestId, getByPlaceholderText, queryByText, prettyDOM } from "@testing-library/react";
+import axios from "axios";
+
+import { render, cleanup, waitForElement, fireEvent, getByText, getByAltText, getAllByTestId, getByPlaceholderText, queryByText, prettyDOM, queryByAltText } from "@testing-library/react";
 
 import Application from "components/Application";
 
@@ -116,5 +118,38 @@ describe("Application", () => {
   
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
 
+  });
+
+
+  it("shows the save error when failing to save an appointment", async () => {
+    axios.put.mockRejectedValueOnce();
+
+    // 1. Render the Application.
+    const { container, debug } = render(<Application />);
+   
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. Click the "Edit" button on the booked appointment.
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByAltText(appointment, "Add")
+    );
+
+    fireEvent.click(getByAltText(appointment, "Add"))
+
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: "Lydia Miller-Jones" }
+    });
+
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+
+    fireEvent.click(getByText(appointment, "Save"))
+
+    await waitForElement(() => getByText(appointment, "Error"));
+
+    debug()
+
+    expect(getByText(container, "Error")).toBeInTheDocument();
+    expect(getByText(container, "Error saving new appointment")).toBeInTheDocument();
   });
 })
