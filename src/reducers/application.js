@@ -1,7 +1,6 @@
-
-export const SET_DAY = "SET_DAY";
-export const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-export const SET_INTERVIEW = "SET_INTERVIEW";
+export const SET_DAY = "SET_DAY"
+export const SET_APPLICATION_DATA = "SET_APPLICATION_DATA"
+export const SET_INTERVIEW = "SET_INTERVIEW"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -25,12 +24,12 @@ const reducer = (state, action) => {
       const appointment = {
         ...state.appointments[id],
         interview: interview
-      };
-  
+      }
+
       const appointments = {
         ...state.appointments,
         [id]: appointment
-      };
+      }
 
       return {
         ...state,
@@ -41,21 +40,23 @@ const reducer = (state, action) => {
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
-      );
+      )
   }
 }
 
 /**
  * Constructs and return a copy of the days array for the provided State object that updates the 'spots' remaining property
  * based on the provided appointments.
- * 
+ *
  * @param {Object} state the State object from useApplicationData
  * @param {Object} appointments the appointments object to calculate the number of remaining spots
  * @returns A copy of the State's days array with the updated 'spots' property
  */
 const updateSpotsForDays = (state, appointments) => {
-  return state.days.map(stateDay => {
-    const spotsRemaining = stateDay.appointments.filter(e => appointments[e].interview === null).length
+  return state.days.map((stateDay) => {
+    const spotsRemaining = stateDay.appointments.filter(
+      (e) => appointments[e].interview === null
+    ).length
     return {
       ...stateDay,
       spots: spotsRemaining
