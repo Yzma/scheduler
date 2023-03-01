@@ -32,7 +32,6 @@ export default function Application(props) {
       );
     }
   );
-  console.log('CURRENT STATE: ', state)
 
   return (
     <main className="layout">
