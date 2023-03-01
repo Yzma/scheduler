@@ -1,25 +1,24 @@
-import React from "react";
+import React from "react"
 
-import useApplicationData from "hooks/useApplicationData";
-import Appointment from "components/Appointment/index.js";
-import DayList from "./DayList";
+import useApplicationData from "hooks/useApplicationData"
+import Appointment from "components/Appointment/index.js"
+import DayList from "./DayList"
 
-import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterviewersForDay,
+  getInterview
+} from "helpers/selectors"
 
-import "components/Application.scss";
+import "components/Application.scss"
 
 export default function Application(props) {
-  const {
-    state,
-    setDay,
-    bookInterview,
-    cancelInterview
-  } = useApplicationData();
+  const { state, setDay, bookInterview, cancelInterview } = useApplicationData()
 
-  const interviewers = getInterviewersForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day)
 
   const appointments = getAppointmentsForDay(state, state.day).map(
-    appointment => {
+    (appointment) => {
       return (
         <Appointment
           key={appointment.id}
@@ -29,9 +28,9 @@ export default function Application(props) {
           bookInterview={bookInterview}
           cancelInterview={cancelInterview}
         />
-      );
+      )
     }
-  );
+  )
 
   return (
     <main className="layout">
@@ -50,11 +49,8 @@ export default function Application(props) {
           src="images/lhl.png"
           alt="Lighthouse Labs"
         />
-
       </section>
-      <section className="schedule">
-        {appointments}
-      </section>
+      <section className="schedule">{appointments}</section>
     </main>
-  );
+  )
 }
