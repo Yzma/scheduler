@@ -1,17 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types';
+import React from "react"
+import PropTypes from "prop-types"
 
-import InterviewerListItem from './InterviewerListItem'
+import InterviewerListItem from "./InterviewerListItem"
 
-import 'components/InterviewerList.scss'
+import "components/InterviewerList.scss"
 
 export const InterviewerList = (props) => {
-
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
       <ul className="interviewers__list">
-        {props.interviewers.map((interviewer) =>
+        {props.interviewers.map((interviewer) => (
           <InterviewerListItem
             key={interviewer.id}
             name={interviewer.name}
@@ -19,7 +18,7 @@ export const InterviewerList = (props) => {
             selected={interviewer.id === props.value}
             setInterviewer={() => props.onChange(interviewer.id)}
           />
-        )}
+        ))}
       </ul>
     </section>
   )
