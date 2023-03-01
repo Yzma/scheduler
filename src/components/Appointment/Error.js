@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 
 const Error = (props) => {
   return (
@@ -18,4 +18,3 @@ const Error = (props) => {
 }
 
 export default Error
-
