@@ -25,7 +25,7 @@ We have to setup 2 projects we need to setup, our frontend (`scheduler`) and our
 1. Download or clone the project (`https://github.com/Yzma/scheduler-api`)
 2. Navigate into the project directory (`scheduler-api`) and install all dependencies by running the `npm install` command in your terminal
 3. Copy the `.env.example` file to `.env.development` and fill in the necessary PostgreSQL configuration. The `node-postgres` library uses these environment variables by default
-4. Navigate into the (`scheduler-api`) folder and run the command (`npm run start`). This will start running our backend server for clients to connect to.
+4. Run the command (`npm run start`). This will start running our backend server for clients to connect to.
 
 Note: Look inside the README file inside the (`scheduler-api`) project directory, specifically the `Creating The DB` section to learn more.
 
@@ -34,7 +34,7 @@ Now that we have the `scheduler-api` backend server up and running, let's switch
 1. Download or clone the project (`git@github.com:Yzma/scheduler.git`)
 2. Navigate into the project directory (`scheduler`) and install all dependencies by running the `npm install` command in your terminal
 3. The default configuration is fine, but if you wish to edit the environment variables, open the `.env.development` and fill in the necessary configuration.
-4. Navigate into the (`scheduler`) folder and run the command (`npm run start`). This will start running our frontend react project.
+4. Run the command (`npm run start`). This will start running our frontend react project.
 5. Once the command finishes executing, the terminal should give you a link to view in the browser, it should be (`http://localhost:8000`) by default.
 
 At this point you should have 2 separate folders, the (`scheduler`) folder and the (`scheduler-api`) folder, both of which have their dependencies installed.
